@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spesial Buat Kamu ❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #ffe5ec;
+            color: #4a4a4a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animasi Hati Berjatuhan */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .heart-drop {
+            position: absolute;
+            color: #ffb3c1;
+            animation: fall linear infinite;
+            font-size: 20px;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            min-height: 430px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        /* Pengaturan Halaman */
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: #ff4d6d; margin-bottom: 15px; font-size: 1.5rem; }
+        h2 { color: #ff758f; margin-bottom: 15px; font-size: 1.3rem; }
+        p { margin-bottom: 20px; line-height: 1.6; font-size: 10.5pt; }
+
+        /* Tombol Navigasi Umum */
+        .btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            margin-top: 20px;
+        }
+        .btn:hover { background: #ff758f; transform: scale(1.05); }
+
+        /* --- HALAMAN 1 & 7: AMPLOPH SURAT --- */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            margin: 20px auto;
+            width: 200px;
+            height: 140px;
+            background-color: #ff758f;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .envelope-wrapper:hover { transform: scale(1.05); }
+        .envelope-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 75px solid #ff4d6d;
+            transform-origin: top;
+            transition: transform 0.4s ease-in-out;
+            z-index: 3;
+        }
+        .envelope-flap-sides {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid #ff8fa3;
+            border-right: 100px solid #ff8fa3;
+            border-top: 70px solid transparent;
+            border-bottom: 70px solid #ff8fa3;
+            border-radius: 0 0 10px 10px;
+            z-index: 2;
+        }
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 170px;
+            height: 110px;
+            background-color: white;
+            border-radius: 5px;
+            z-index: 1;
+            transition: transform 0.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
+        .envelope-wrapper.open .letter { transform: translateY(-50px); z-index: 2; }
+        .click-hint { font-size: 0.9rem; color: #ff4d6d; font-weight: bold; margin-top: 15px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+        /* --- HALAMAN 2: TIC-TAC-TOE --- */
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 240px; margin: 15px auto; }
+        .cell { background: #ffb3c1; aspect-ratio: 1; border-radius: 10px; font-size: 1.8rem; font-weight: bold; color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
+        .cell:hover { background: #ff758f; }
+        .status { font-weight: bold; color: #ff4d6d; margin-top: 10px; font-size: 0.95rem; }
+
+        /* --- HALAMAN 4: FOTO BERTUMPUK (AESTHETIC STACK) --- */
+        .gallery-container {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            margin: 20px auto;
+        }
+        .polaroid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            padding: 10px 10px 35px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.5s ease, z-index 0.5s;
+            transform-origin: center center;
+        }
+        .polaroid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 1px solid #f0f0f0;
+        }
+        .polaroid-text {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #555;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        /* Rotasi acak tumpukan foto biar terlihat natural */
+        .polaroid:nth-child(1) { transform: rotate(-4deg); z-index: 6; }
+        .polaroid:nth-child(2) { transform: rotate(3deg); z-index: 5; }
+        .polaroid:nth-child(3) { transform: rotate(-2deg); z-index: 4; }
+        .polaroid:nth-child(4) { transform: rotate(5deg); z-index: 3; }
+        .polaroid:nth-child(5) { transform: rotate(-5deg); z-index: 2; }
+        .polaroid:nth-child(6) { transform: rotate(1deg); z-index: 1; }
+
+        /* --- HALAMAN 6: KUIS AJAKAN KENCAN --- */
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; margin: 0 auto; }
+        .opt-btn { background: #fff; color: #ff4d6d; border: 2px solid #ff4d6d; padding: 10px; border-radius: 15px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .opt-btn:hover { background: #ffe5ec; }
+        #btn-no { position: relative; background: #ccc; color: #333; border: none; transition: 0.2s all ease; }
+
+        /* --- HALAMAN 7: QUOTES --- */
+        .quote-box { background: #fff0f3; padding: 12px; border-radius: 12px; border-left: 4px solid #ff4d6d; font-style: italic; margin: 10px 0; text-align: left; font-size: 0.9rem; }
+        .movie-title { display: block; text-align: right; font-size: 0.75rem; color: #777; font-weight: bold; margin-top: 3px; font-style: normal; }
+
+        .audio-container { margin: 15px 0; width: 100%; }
+        audio { width: 100%; height: 35px; }
+    </style>
+</head>
+<body>
+
+<div class="hearts-bg" id="hearts-bg"></div>
+
+<!-- Audio Player Utama -->
+<audio id="bg-music" loop>
+    <source src="lagu-romantis.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    
+    <!-- HALAMAN 1: BUKA AMPLOP (TRIGGER MUSIC) -->
+    <div id="page1" class="page active">
+        <h1>Ada Surat Buat Kamu... ✉️</h1>
+        <p>Aku tau kamu lagi ngambek, tapi tolong buka dulu surat kecil dari aku ini ya?</p>
+        <div class="envelope-wrapper" id="envelope-open" onclick="openEnvelope()">
+            <div class="envelope-flap-sides"></div>
+            <div class="letter">❤️</div>
+        </div>
+        <div class="click-hint" id="hint-text">Ketuk amplopnya untuk membuka ✨</div>
+    </div>
+
+    <!-- HALAMAN 2: GAME TIC-TAC-TOE -->
+    <div id="page2" class="page">
+        <h1>Eitss, Main Bentar Yuk! 😜</h1>
+        <p>Katanya masih ngambek? Selesaikan tantangan ini dulu dong. Kamu jalan duluan (X)!</p>
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div class="status" id="status">Giliran kamu (X)</div>
+    </div>
+
+    <!-- HALAMAN 3: UNGKAPAN TERIMAKASIH -->
+    <div id="page3" class="page">
+        <h2>Terima Kasih Ya... 🌹</h2>
+        <p>Makasih ya udah selalu sabar, selalu ada, dan tetep sayang sama aku walaupun aku kadang nyebelin atau bikin salah. Aku bersyukur banget bisa punya kamu dalam hidupku.</p>
+        <p>Maafin kesalahan aku yang kemarin ya? Jangan ngambek lagi... 💕</p>
+        <button class="btn" onclick="nextPage(4)">Lihat Ini Deh 👉</button>
+    </div>
+
+    <!-- HALAMAN 4: FOTO BERTUMPUK (ESTETIK POLAROID) -->
+    <div id="page4" class="page">
+        <h2>Momen-Momen Kita ✨</h2>
+        <p>Ketuk atau klik fotonya untuk melihat momen seru kita yang lainnya!</p>
+        
+        <div class="gallery-container" onclick="rotatePhotos()">
+            <!-- Tumpukan 6 Foto. Taruh foto paling atas di baris pertama -->
+            <div class="polaroid">
+                <img src="foto1.jpg" alt="Foto 1">
+                <div class="polaroid-text">You're Beautiful ❤️</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto2.jpg" alt="Foto 2">
+                <div class="polaroid-text">Happy Day ✨</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto3.jpg" alt="Foto 3">
+                <div class="polaroid-text">My Favorite Person 🥰</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto4.jpg" alt="Foto 4">
+                <div class="polaroid-text">Sweet Memories 🌸</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto5.jpg" alt="Foto 5">
+                <div class="polaroid-text">Cute Together 💖</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto6.jpg" alt="Foto 6">
+                <div class="polaroid-text">Me & You Forever 🔒</div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="nextPage(5)">Lanjut Nonton 🎬</button>
+    </div>
+
+    <!-- HALAMAN 5: VIDEO -->
+    <div id="page5" class="page">
+        <h2>Cuplikan Kenangan Kita 🎬</h2>
+        <p>Beberapa video singkat yang bikin aku selalu kangen kamu:</p>
+        
+        <div style="max-height: 280px; overflow-y: auto; padding-right: 5px; margin-bottom: 10px;">
+            <video controls style="width: 100%; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <source src="video1.mp4" type="video/mp4">
+            </video>
+            <video controls style="width: 100%; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <source src="video2.mp4" type="video/mp4">
+            </video>
+            <video controls style="width: 100%; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <source src="video3.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <button class="btn" onclick="nextPage(6)">Ada Pertanyaan Akhir 🤔</button>
+    </div>
+
+    <!-- HALAMAN 6: KUIS RINGAN AJAKAN NGEDATE -->
+    <div id="page6" class="page">
+        <h2>Pertanyaan Serius! 🤔</h2>
+        <p>Sebagai tanda permintaan maaf resmi, akhir pekan ini mau gak nemenin aku jalan-jalan/ngedate cari makanan kesukaan kamu?</p>
+        
+        <div class="quiz-options">
+            <button class="opt-btn" onclick="nextPage(7)">Mau Banget! 🥰</button>
+            <button class="opt-btn" onclick="nextPage(7)">Boleh, Tapi Traktir Ya 😋</button>
+            <button class="opt-btn" id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">Enggak Mau! 😜</button>
+        </div>
+    </div>
+
+    <!-- HALAMAN 7: TUTUP AMPLOP + QUOTES FILM -->
+    <div id="page7" class="page">
+        <h2>Yaaay! Sampai Ketemu! 🎉</h2>
+        <p>Makasih ya udah dimaafin. Suratnya aku tutup kembali, tapi rasa sayangku gak akan pernah ketutup.</p>
+        
+        <!-- Komponen Tutup Amplop Masuk ke Sini otomatis -->
+        <div class="envelope-wrapper open" id="envelope-close" style="cursor: default; pointer-events: none;">
+            <div class="envelope-flap-sides"></div>
+            <div class="letter" style="transform: translateY(0px); z-index:1;">🔒❤️</div>
+        </div>
+
+        <div class="quote-box">
+            "I love you very much, probably more than anybody could love another person."
+            <span class="movie-title">— 50 First Dates</span>
+        </div>
+
+        <p style="font-size: 1.2rem; font-weight: bold; color: #ff4d6d; margin-top: 15px;">I ❤️ YOU!</p>
+    </div>
+
+</div>
+
+<script>
+    const music = document.getElementById('bg-music');
+
+    // --- 1. FUNGSI BUKA AMPLOP AWAL ---
+    function openEnvelope() {
+        const envelope = document.getElementById('envelope-open');
+        const hint = document.getElementById('hint-text');
+        
+        envelope.classList.add('open');
+        hint.innerText = "Membuka pesan cinta... ❤️";
+        
+        // Trigger musik menyala
+        music.play().catch(e => console.log("Autoplay aktif"));
+
+        setTimeout(() => { nextPage(2); }, 1500);
+    }
+
+    // --- 2. MULTI-PAGE SPA ENGINE ---
+    function nextPage(pageNumber) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page' + pageNumber).classList.add('active');
+        
+        // Aturan Khusus jika masuk Halaman 7 (Tutup Amplop kembali otomatis)
+        if(pageNumber === 7) {
+            setTimeout(() => {
+                document.getElementById('envelope-close').classList.remove('open');
+            }, 800);
+        }
+    }
+
+    // --- 3. GAME TIC-TAC-TOE ---
+    const boardElement = document.getElementById('board');
+    const statusElement = document.getElementById('status');
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let isGameActive = true;
+    const winningConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+    boardElement.addEventListener('click', (e) => {
+        const cell = e.target;
+        const index = cell.getAttribute('data-index');
+        if (!index || cell.innerText !== "" || !isGameActive) return;
+
+        board[index] = "X";
+        cell.innerText = "X";
+        
+        if (checkWin("X")) {
+            isGameActive = false;
+            statusElement.innerText = "Kamu Menang! Membuka pesan...";
+            setTimeout(() => { nextPage(3); }, 1200);
+            return;
+        }
+        if (!board.includes("")) { statusElement.innerText = "Seri! Mengulang..."; resetBoard(); return; }
+
+        isGameActive = false;
+        statusElement.innerText = "Aku mikir dulu...";
+        setTimeout(() => {
+            let emptyCells = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+            let botMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            board[botMove] = "O";
+            document.querySelector(`[data-index='${botMove}']`).innerText = "O";
+
+            if (checkWin("O")) { statusElement.innerText = "Yah kamu kalah, mengulang game!"; resetBoard(); return; }
+            isGameActive = true;
+            statusElement.innerText = "Giliran kamu lagi (X)";
+        }, 500);
+    });
+
+    function checkWin(p) { return winningConditions.some(cond => cond.every(idx => board[idx] === p)); }
+    function resetBoard() {
+        setTimeout(() => {
+            board = ["", "", "", "", "", "", "", "", ""];
+            document.querySelectorAll('.cell').forEach(c => c.innerText = "");
+            statusElement.innerText = "Giliran kamu (X)";
+            isGameActive = true;
+        }, 1200);
+    }
+
+    // --- 4. FUNGSI FOTO BERTUMPUK (STACKED PHOTOS) ---
+    function rotatePhotos() {
+        const container = document.querySelector('.gallery-container');
+        const cards = container.querySelectorAll('.polaroid');
+        // Ambil kartu paling atas (index terakhir)
+        const topCard = cards[cards.length - 1];
+        
+        // Buat efek animasi geser keluar dan pindah ke tumpukan paling bawah
+        topCard.style.transform = 'translateX(-150px) rotate(-20deg)';
+        topCard.style.opacity = '0';
+        
+        setTimeout(() => {
+            topCard.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+            topCard.style.opacity = '1';
+            container.insertBefore(topCard, container.firstChild);
+            
+            // Re-index z-index agar urutan tumpukan benar
+            const newCards = container.querySelectorAll('.polaroid');
+            newCards.forEach((card, idx) => {
+                card.style.zIndex = idx + 1;
+            });
+        }, 400);
+    }
+
+    // --- 5. TOMBOL MENGHINDAR KUIS ---
+    function moveNoButton() {
+        const noBtn = document.getElementById('btn-no');
+        const x = Math.random() * 140 - 70;
+        const y = Math.random() * 140 - 70;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // --- 6. ANIMASI HATI LATAR BELAKANG ---
+    const bg = document.getElementById('hearts-bg');
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-drop');
+        heart.innerText = ['❤️','💖','✨','🌸'][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+        bg.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 5000);
+    }
+    setInterval(createHeart, 400);
+</script>
+</body>
+</html>
